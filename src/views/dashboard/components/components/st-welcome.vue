@@ -24,11 +24,7 @@
             {{ userStore.user.nickname || userStore.user.username }}，欢迎回来！
           </div>
           <div class="leading-5 mt-2">
-            <a-tag color="blue" bordered>免费开源、可商用</a-tag>
-            欢迎使用MineAdmin后台权限管理系统，系统开源、免费使用。喜欢的请点个 ⭐Star。
-            <a-space size="large">
-              <a-link @click="donate"><icon-thumb-up /> 给作者买杯奶茶</a-link>
-            </a-space>
+            欢迎使用汇智虚拟园区后台权限管理系统 ⭐。
           </div>
         </div>
       </div>
@@ -37,11 +33,6 @@
         <p class="text-base">{{ day }}</p>
       </div>
     </div>
-
-    <a-modal :footer="false" v-model:visible="visible">
-      <template #title>感谢你的捐助</template>
-      <a-image src="https://doc.mineadmin.com/qrcode.jpg" />
-    </a-modal>
   </div>
 </template>
 
@@ -65,9 +56,6 @@
     time.value = dayjs().format('HH:mm:ss')
     day.value  = dayjs().format('YYYY年MM月DD日')
   }
-
-  const donate = () => visible.value = true
-  
 </script>
 
 <style scoped>
