@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import parkMpUser from '@/api/park/parkMpUser'
+import parkIndustrialServiceApply from '@/api/park/parkIndustrialServiceApply'
 import { Message } from '@arco-design/web-vue'
 import tool from '@/utils/tool'
 import * as common from '@/utils/common'
@@ -18,18 +18,23 @@ const crudRef = ref()
 
 
 const options = reactive({
-  id: 'park_mp_user',
+  id: 'park_industrial_service_apply',
   rowSelection: {
     showCheckedAll: true
   },
   pk: 'id',
-  operationColumn: false,
+  operationColumn: true,
   operationColumnWidth: 160,
   formOption: {
     viewType: 'modal',
     width: 600
   },
-  api: parkMpUser.getList
+  api: parkIndustrialServiceApply.getList,
+  edit: {
+    show: true,
+    api: parkIndustrialServiceApply.update,
+    auth: ['park:industrialServiceApply:update']
+  }
 })
 
 const columns = reactive([
@@ -39,6 +44,7 @@ const columns = reactive([
     formType: "input",
     addDisplay: false,
     editDisplay: false,
+    hide: true,
     commonRules: {
       required: true,
       message: "请输入"
@@ -52,90 +58,98 @@ const columns = reactive([
     }
   },
   {
-    title: "头像",
-    dataIndex: "header_image",
-    formType: "upload",
+    title: "产业服务ID",
+    dataIndex: "service_id",
+    formType: "input",
     addDisplay: false,
     editDisplay: false,
-    type: "image",
-    multiple: false
+    commonRules: {
+      required: true,
+      message: "请输入产业服务ID"
+    }
   },
   {
-    title: "昵称",
-    dataIndex: "nick_name",
+    title: "用户ID",
+    dataIndex: "user_id",
     formType: "input",
     addDisplay: false,
-    editDisplay: false
+    editDisplay: false,
+    hide: true,
+    commonRules: {
+      required: true,
+      message: "请输入用户ID"
+    }
   },
   {
-    title: "真实姓名",
-    dataIndex: "real_name",
-    formType: "input",
-    search: true,
-    addDisplay: false,
-    editDisplay: false
-  },
-  {
-    title: "性别",
-    dataIndex: "gender",
-    formType: "input",
-    addDisplay: false,
-    editDisplay: false
-  },
-  {
-    title: "公司",
-    dataIndex: "compay_name",
+    title: "用户名称",
+    dataIndex: "user_name",
     formType: "input",
     search: true,
     addDisplay: false,
-    editDisplay: false
+    editDisplay: false,
+    commonRules: {
+      required: true,
+      message: "请输入用户名称"
+    }
   },
   {
-    title: "手机号",
+    title: "电话",
     dataIndex: "phone",
     formType: "input",
-    search: true,
     addDisplay: false,
-    editDisplay: false
+    editDisplay: false,
+    commonRules: {
+      required: true,
+      message: "请输入电话"
+    }
   },
   {
-    title: "邮箱",
+    title: "电子邮箱",
     dataIndex: "email",
     formType: "input",
     addDisplay: false,
+    editDisplay: false,
+    commonRules: {
+      required: true,
+      message: "请输入电子邮箱"
+    }
+  },
+  {
+    title: "公司",
+    dataIndex: "compay",
+    formType: "input",
+    addDisplay: false,
     editDisplay: false
   },
   {
-    title: "密码",
-    dataIndex: "password",
-    formType: "input",
+    title: "备注",
+    dataIndex: "remark",
+    formType: "editor",
     addDisplay: false,
-    editDisplay: false,
-    hide: true
+    editDisplay: false
   },
   {
-    title: "公众号OpenID",
-    dataIndex: "mp_open_id",
-    formType: "input",
+    title: "审核状态",
+    dataIndex: "status",
+    formType: "select",
+    search: true,
     addDisplay: false,
-    editDisplay: false,
-    hide: true
-  },
-  {
-    title: "小程序OpenID",
-    dataIndex: "xcx_open_id",
-    formType: "input",
-    addDisplay: false,
-    editDisplay: false,
-    hide: true
-  },
-  {
-    title: "公众号和小程序联合ID",
-    dataIndex: "union_open_id",
-    formType: "input",
-    addDisplay: false,
-    editDisplay: false,
-    hide: true
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
+    },
+    multiple: false,
+    dict: {
+      name: "apply",
+      props: {
+        label: "title",
+        value: "key"
+      },
+      translation: true
+    }
   },
   {
     title: "创建时间",
@@ -143,6 +157,14 @@ const columns = reactive([
     formType: "date",
     addDisplay: false,
     editDisplay: false,
+    hide: true,
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
+    },
     showTime: true
   },
   {
@@ -165,4 +187,4 @@ const columns = reactive([
   }
 ])
 </script>
-<script> export default { name: 'park:mpUser' } </script>
+<script> export default { name: 'park:industrialServiceApply' } </script>

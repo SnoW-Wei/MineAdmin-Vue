@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import parkIconGrid from '@/api/park/parkIconGrid'
+import parkIndustrialService from '@/api/park/parkIndustrialService'
 import { Message } from '@arco-design/web-vue'
 import tool from '@/utils/tool'
 import * as common from '@/utils/common'
@@ -16,20 +16,20 @@ const crudRef = ref()
 
 
 const numberOperation = (newValue, id, numberName) => {
-  parkIconGrid.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
+  parkIndustrialService.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 const switchStatus = (statusValue, id, statusName) => {
-  parkIconGrid.changeStatus({ id, statusName, statusValue }).then( res => {
+  parkIndustrialService.changeStatus({ id, statusName, statusValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 
 const options = reactive({
-  id: 'park_icon_grid',
+  id: 'park_industrial_service',
   rowSelection: {
     showCheckedAll: true
   },
@@ -40,21 +40,21 @@ const options = reactive({
     viewType: 'modal',
     width: 600
   },
-  api: parkIconGrid.getList,
+  api: parkIndustrialService.getList,
   add: {
     show: true,
-    api: parkIconGrid.save,
-    auth: ['park:iconGrid:save']
+    api: parkIndustrialService.save,
+    auth: ['park:industrialService:save']
   },
   edit: {
     show: true,
-    api: parkIconGrid.update,
-    auth: ['park:iconGrid:update']
+    api: parkIndustrialService.update,
+    auth: ['park:industrialService:update']
   },
   delete: {
     show: true,
-    api: parkIconGrid.deletes,
-    auth: ['park:iconGrid:delete']
+    api: parkIndustrialService.deletes,
+    auth: ['park:industrialService:delete']
   }
 })
 
@@ -69,44 +69,79 @@ const columns = reactive([
     commonRules: {
       required: true,
       message: "请输入"
+    },
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
     }
   },
   {
-    title: "图标名称",
+    title: "分类类型",
+    dataIndex: "category_id",
+    formType: "select",
+    search: true,
+    commonRules: {
+      required: true,
+      message: "请输入分类类型"
+    }
+  },
+  {
+    title: "标题",
     dataIndex: "title",
     formType: "input",
     search: true,
     commonRules: {
       required: true,
-      message: "请输入图标名称"
+      message: "请输入标题"
     }
   },
   {
-    title: "图标图片",
-    dataIndex: "icon_image",
+    title: "小标题",
+    dataIndex: "subtitle",
+    formType: "input",
+    commonRules: {
+      required: true,
+      message: "请输入小标题"
+    }
+  },
+  {
+    title: "公司名称",
+    dataIndex: "company",
+    formType: "input",
+    search: true,
+    commonRules: {
+      required: true,
+      message: "请输入公司名称"
+    }
+  },
+  {
+    title: "列表小图",
+    dataIndex: "image",
     formType: "upload",
     commonRules: {
       required: true,
-      message: "请输入图标图片"
+      message: "请输入列表小图"
     },
     type: "image",
-    multiple: false,
-    onlyData: true,
-    returnType: "hash"
+    multiple: false
   },
   {
-    title: "跳转地址",
-    dataIndex: "url",
-    formType: "input"
+    title: "公司介绍",
+    dataIndex: "content",
+    formType: "editor",
+    hide: true,
+    commonRules: {
+      required: true,
+      message: "请输入公司介绍"
+    }
   },
   {
     title: "排序",
     dataIndex: "sort",
     formType: "input",
-    commonRules: {
-      required: true,
-      message: "请输入排序"
-    },
     sortable: {
       sortDirections: [
         "ascend",
@@ -118,14 +153,6 @@ const columns = reactive([
   {
     title: "创建者",
     dataIndex: "created_by",
-    formType: "input",
-    addDisplay: false,
-    editDisplay: false,
-    hide: true
-  },
-  {
-    title: "更新者",
-    dataIndex: "updated_by",
     formType: "input",
     addDisplay: false,
     editDisplay: false,
@@ -160,4 +187,4 @@ const columns = reactive([
   }
 ])
 </script>
-<script> export default { name: 'park:iconGrid' } </script>
+<script> export default { name: 'park:industrialService' } </script>

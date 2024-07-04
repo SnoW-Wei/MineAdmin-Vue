@@ -75,12 +75,20 @@ const columns = reactive([
     title: "标题",
     dataIndex: "title",
     formType: "input",
-    search: true
+    search: true,
+    commonRules: {
+      required: true,
+      message: "请输入标题"
+    }
   },
   {
     title: "banner图片",
     dataIndex: "file_hash",
     formType: "upload",
+    commonRules: {
+      required: true,
+      message: "请输入banner图片"
+    },
     type: "image",
     multiple: false,
     onlyData: true,
@@ -94,7 +102,14 @@ const columns = reactive([
   {
     title: "排序",
     dataIndex: "sort",
-    formType: "input"
+    formType: "input",
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
+    }
   },
   {
     title: "创建者",

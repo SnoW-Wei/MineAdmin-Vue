@@ -75,19 +75,31 @@ const columns = reactive([
     title: "公告标题",
     dataIndex: "title",
     formType: "input",
-    search: true
+    search: true,
+    commonRules: {
+      required: true,
+      message: "请输入公告标题"
+    }
   },
   {
     title: "公告内容",
     dataIndex: "content",
     formType: "editor",
-    hide: true
+    hide: true,
+    commonRules: {
+      required: true,
+      message: "请输入公告内容"
+    }
   },
   {
     title: "发布时间",
     dataIndex: "sub_date",
     formType: "date",
     search: true,
+    commonRules: {
+      required: true,
+      message: "请输入发布时间"
+    },
     showTime: false
   },
   {
@@ -95,7 +107,11 @@ const columns = reactive([
     dataIndex: "type",
     formType: "select",
     search: true,
-    multiple: true,
+    commonRules: {
+      required: true,
+      message: "请输入公告类型"
+    },
+    multiple: false,
     dict: {
       data: [
         {
@@ -117,7 +133,14 @@ const columns = reactive([
   {
     title: "排序",
     dataIndex: "sort",
-    formType: "input"
+    formType: "input",
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
+    }
   },
   {
     title: "创建人",

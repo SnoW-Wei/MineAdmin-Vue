@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import parkIconGrid from '@/api/park/parkIconGrid'
+import parkIndustrialServiceCategory from '@/api/park/parkIndustrialServiceCategory'
 import { Message } from '@arco-design/web-vue'
 import tool from '@/utils/tool'
 import * as common from '@/utils/common'
@@ -16,20 +16,20 @@ const crudRef = ref()
 
 
 const numberOperation = (newValue, id, numberName) => {
-  parkIconGrid.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
+  parkIndustrialServiceCategory.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 const switchStatus = (statusValue, id, statusName) => {
-  parkIconGrid.changeStatus({ id, statusName, statusValue }).then( res => {
+  parkIndustrialServiceCategory.changeStatus({ id, statusName, statusValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 
 const options = reactive({
-  id: 'park_icon_grid',
+  id: 'park_industrial_service_category',
   rowSelection: {
     showCheckedAll: true
   },
@@ -40,21 +40,16 @@ const options = reactive({
     viewType: 'modal',
     width: 600
   },
-  api: parkIconGrid.getList,
+  api: parkIndustrialServiceCategory.getList,
   add: {
     show: true,
-    api: parkIconGrid.save,
-    auth: ['park:iconGrid:save']
+    api: parkIndustrialServiceCategory.save,
+    auth: ['park:industrialServiceCategory:save']
   },
   edit: {
     show: true,
-    api: parkIconGrid.update,
-    auth: ['park:iconGrid:update']
-  },
-  delete: {
-    show: true,
-    api: parkIconGrid.deletes,
-    auth: ['park:iconGrid:delete']
+    api: parkIndustrialServiceCategory.update,
+    auth: ['park:industrialServiceCategory:update']
   }
 })
 
@@ -69,35 +64,24 @@ const columns = reactive([
     commonRules: {
       required: true,
       message: "请输入"
+    },
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
     }
   },
   {
-    title: "图标名称",
-    dataIndex: "title",
+    title: "类型名称",
+    dataIndex: "name",
     formType: "input",
     search: true,
     commonRules: {
       required: true,
-      message: "请输入图标名称"
+      message: "请输入类型名称"
     }
-  },
-  {
-    title: "图标图片",
-    dataIndex: "icon_image",
-    formType: "upload",
-    commonRules: {
-      required: true,
-      message: "请输入图标图片"
-    },
-    type: "image",
-    multiple: false,
-    onlyData: true,
-    returnType: "hash"
-  },
-  {
-    title: "跳转地址",
-    dataIndex: "url",
-    formType: "input"
   },
   {
     title: "排序",
@@ -160,4 +144,4 @@ const columns = reactive([
   }
 ])
 </script>
-<script> export default { name: 'park:iconGrid' } </script>
+<script> export default { name: 'park:industrialServiceCategory' } </script>
