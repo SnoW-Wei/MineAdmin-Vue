@@ -86,6 +86,30 @@ const columns = reactive([
     commonRules: {
       required: true,
       message: "请输入分类类型"
+    },
+    dict: {
+      // 远程通用接口请求，新版代码生成都有一个 remote 接口
+      remote: 'park/industrialServiceCategory/remote',
+      // 指定组件接收的props
+      props: { label: 'name', value: 'id' },
+      // 开启分页
+      openPage: true,
+      // 对数据进行字典翻译
+      translation: true,
+      // 远程请求配置项
+      remoteOption: {
+        // 按用户名排序
+        sort: { id: 'desc' }, // 如果不指定排序方式，默认为正序排序
+        // 设置查询的字段
+        select: [ 'id', 'name' ],
+        // 设置数据过滤
+        filter: {
+          // 查找 id 大于 2 的数据
+          // id: [ '>', 2],
+          // 并且用户名包含字母 a 的用户
+          // name: [ 'like', 'a' ]
+        }
+      }
     }
   },
   {
@@ -126,7 +150,9 @@ const columns = reactive([
       message: "请输入列表小图"
     },
     type: "image",
-    multiple: false
+    multiple: false,
+    onlyData: true,
+    returnType: "hash"
   },
   {
     title: "公司介绍",
