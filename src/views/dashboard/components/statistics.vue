@@ -12,8 +12,8 @@
   <st-welcome />
   <st-announced />
 
-  <st-count />
-  <st-login-chart />
+<!--  <st-count />
+  <st-login-chart />-->
 </template>
 
 <script setup>
