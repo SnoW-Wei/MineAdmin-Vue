@@ -18,7 +18,10 @@
       >
         <li
           :class="`${classStyle}`"
-          @click="loadMenu(bigMenu, index)"
+          @click="() => {
+            keepAliveStore.menuLoader = false
+            loadMenu(bigMenu, index)
+          }"
         >
           <component v-if="bigMenu.meta.icon" :is="bigMenu.meta.icon" class="text-xl mt-1" />
           <span
@@ -46,7 +49,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import MaMenu from '../ma-menu.vue'
 
-  import { useAppStore, useUserStore } from '@/store'
+  import { useAppStore, useUserStore, useKeepAliveStore } from '@/store'
 
   const route = useRoute()
   const router = useRouter()
@@ -54,39 +57,46 @@
   const MaMenuRef = ref(null)
   const appStore = useAppStore()
   const userStore = useUserStore()
+  const keepAliveStore = useKeepAliveStore()
   const showMenu = ref(false)
 
   const title = ref('')
   const classStyle = ref('flex flex-col parent-menu items-center rounded mt-1 text-gray-200 hover:bg-gray-700 dark:hover:text-gray-50 dark:hover:bg-blackgray-1')
 
   onMounted(() => {
-    initMenu()
+    keepAliveStore.menuLoader = true
+    initMenu(true)
   })
 
   watch(() => route, v => {
-    initMenu()
+    keepAliveStore.menuLoader = false
+    initMenu(false)
   }, { deep: true })
 
-  const initMenu = () => {
+  const initMenu = (init = true) => {
     let current
     if (route.matched[1]?.meta?.breadcrumb) {
       current = route.matched[1].meta.breadcrumb[0].name
     } else {
       current = 'home'
     }
+    console.log(current)
     if (userStore.routers && userStore.routers.length > 0) {
       userStore.routers.map((item, index) => {
-        if (item.name == current) loadMenu(item, index)
+        if (item.name == current) loadMenu(item, index, init)
       })
     }
   }
 
-  const loadMenu = (bigMenu, index) => {
+  const loadMenu = (bigMenu, index, isInit = true) => {
     if (bigMenu.meta.type === 'L') {
       window.open(bigMenu.path)
       return
     }
     if (bigMenu.children.length > 0) {
+      if (bigMenu.redirect && isInit && !keepAliveStore.menuLoader) {
+        router.push(bigMenu.redirect)
+      }
       MaMenuRef.value.loadChildMenu(bigMenu)
       showMenu.value = true
     } else {
