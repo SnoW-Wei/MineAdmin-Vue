@@ -187,11 +187,11 @@ const see = async (data) => {
   await nextTick(() => maFormRef.value && maFormRef.value.updateOptions() )
 }
 
-const init = () => {
+const init = async () => {
   dataLoading.value = true
   const layout = JSON.parse(JSON.stringify(options?.formOption?.layout ?? []))
 
-  columns.value.map(async item => {
+  await Promise.all(columns.value.map(async item => {
     if (item.children && item.children.length > 0){
       await item.children.map(async (childItem) => {
         await columnItemHandle(childItem)
@@ -199,7 +199,7 @@ const init = () => {
     }else {
       await columnItemHandle(item)
     }
-  })
+  }))
   // 设置表单布局
   settingFormLayout(layout)
   if (isArray(layout) && layout.length > 0) {
@@ -249,6 +249,9 @@ const columnItemHandle = async (item) => {
     }
   }
 
+  item.disabled = undefined
+  item.readonly = undefined
+  await nextTick()
   // 其他处理
   item.display = formItemShow(item)
   item.disabled = formItemDisabled(item)
@@ -354,6 +357,9 @@ const formItemReadonly = (item) => {
   }
   if (currentAction.value === 'edit' && ! isUndefined(item.editReadonly)) {
     return isFunction(item.editReadonly) ? item.editReadonly(form.value) : item.editReadonly
+  }
+  if (currentAction.value === 'see') {
+    return true
   }
   if (! isUndefined(item.readonly)) {
     return item.readonly
