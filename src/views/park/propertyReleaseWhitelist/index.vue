@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import parkIconGrid from '@/api/park/parkIconGrid'
+import parkPropertyReleaseWhitelist from '@/api/park/parkPropertyReleaseWhitelist'
 import { Message } from '@arco-design/web-vue'
 import tool from '@/utils/tool'
 import * as common from '@/utils/common'
@@ -16,20 +16,20 @@ const crudRef = ref()
 
 
 const numberOperation = (newValue, id, numberName) => {
-  parkIconGrid.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
+  parkPropertyReleaseWhitelist.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 const switchStatus = (statusValue, id, statusName) => {
-  parkIconGrid.changeStatus({ id, statusName, statusValue }).then( res => {
+  parkPropertyReleaseWhitelist.changeStatus({ id, statusName, statusValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 
 const options = reactive({
-  id: 'park_icon_grid',
+  id: 'park_property_release_whitelist',
   rowSelection: {
     showCheckedAll: true
   },
@@ -40,21 +40,40 @@ const options = reactive({
     viewType: 'modal',
     width: 600
   },
-  api: parkIconGrid.getList,
+  api: parkPropertyReleaseWhitelist.getList,
+  recycleApi: parkPropertyReleaseWhitelist.getRecycleList,
   add: {
     show: true,
-    api: parkIconGrid.save,
-    auth: ['park:iconGrid:save']
+    api: parkPropertyReleaseWhitelist.save,
+    auth: ['park:propertyReleaseWhitelist:save']
   },
   edit: {
     show: true,
-    api: parkIconGrid.update,
-    auth: ['park:iconGrid:update']
+    api: parkPropertyReleaseWhitelist.update,
+    auth: ['park:propertyReleaseWhitelist:update']
   },
   delete: {
     show: true,
-    api: parkIconGrid.deletes,
-    auth: ['park:iconGrid:delete']
+    api: parkPropertyReleaseWhitelist.deletes,
+    auth: ['park:propertyReleaseWhitelist:delete'],
+    realApi: parkPropertyReleaseWhitelist.realDeletes,
+    realAuth: ['park:propertyReleaseWhitelist:realDeletes']
+  },
+  recovery: {
+    show: true,
+    api: parkPropertyReleaseWhitelist.recoverys,
+    auth: ['park:propertyReleaseWhitelist:recovery']
+  },
+  import: {
+    show: true,
+    url: 'park/propertyReleaseWhitelist/import',
+    templateUrl: 'park/propertyReleaseWhitelist/downloadTemplate',
+    auth: ['park:propertyReleaseWhitelist:import']
+  },
+  export: {
+    show: true,
+    url: 'park/propertyReleaseWhitelist/export',
+    auth: ['park:propertyReleaseWhitelist:export']
   }
 })
 
@@ -79,62 +98,18 @@ const columns = reactive([
     }
   },
   {
-    title: "图标名称",
-    dataIndex: "title",
+    title: "手机号",
+    dataIndex: "phone",
     formType: "input",
     search: true,
     commonRules: {
       required: true,
-      message: "请输入图标名称"
-    }
-  },
-  {
-    title: "图标图片",
-    dataIndex: "icon_image",
-    formType: "upload",
-    commonRules: {
-      required: true,
-      message: "请输入图标图片"
-    },
-    type: "image",
-    multiple: false,
-    onlyData: true,
-    returnType: "hash"
-  },
-  {
-    title: "标识",
-    dataIndex: "code",
-    formType: "input",
-    commonRules: {
-      required: true,
-      message: "请输入标识"
-    }
-  },
-  {
-    title: "跳转地址",
-    dataIndex: "url",
-    formType: "input"
-  },
-  {
-    title: "排序",
-    dataIndex: "sort",
-    formType: "input",
-    commonRules: {
-      required: true,
-      message: "请输入排序"
+      message: "请输入手机号"
     }
   },
   {
     title: "创建者",
     dataIndex: "created_by",
-    formType: "input",
-    addDisplay: false,
-    editDisplay: false,
-    hide: true
-  },
-  {
-    title: "更新者",
-    dataIndex: "updated_by",
     formType: "input",
     addDisplay: false,
     editDisplay: false,
@@ -169,4 +144,4 @@ const columns = reactive([
   }
 ])
 </script>
-<script> export default { name: 'park:iconGrid' } </script>
+<script> export default { name: 'park:propertyReleaseWhitelist' } </script>

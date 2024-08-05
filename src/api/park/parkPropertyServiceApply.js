@@ -41,5 +41,17 @@ export default {
     })
   },
 
+  /**
+   * 更新服务申请数据
+   * @returns
+   */
+  update (id, data = {}) {
+    return request({
+      url: 'park/propertyServiceApply/update/' + id,
+      method: 'put',
+      data
+    })
+  },
+
 
 }

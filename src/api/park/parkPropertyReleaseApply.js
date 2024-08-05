@@ -41,5 +41,17 @@ export default {
     })
   },
 
+  /**
+   * 更新物品放行数据
+   * @returns
+   */
+  update (id, data = {}) {
+    return request({
+      url: 'park/propertyReleaseApply/update/' + id,
+      method: 'put',
+      data
+    })
+  },
+
 
 }

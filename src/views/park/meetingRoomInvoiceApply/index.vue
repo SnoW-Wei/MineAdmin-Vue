@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import parkIconGrid from '@/api/park/parkIconGrid'
+import parkMeetingRoomInvoiceApply from '@/api/park/parkMeetingRoomInvoiceApply'
 import { Message } from '@arco-design/web-vue'
 import tool from '@/utils/tool'
 import * as common from '@/utils/common'
@@ -15,21 +15,16 @@ import * as common from '@/utils/common'
 const crudRef = ref()
 
 
-const numberOperation = (newValue, id, numberName) => {
-  parkIconGrid.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
-    res.success && Message.success(res.message)
-  }).catch( e => { console.log(e) } )
-}
 
 const switchStatus = (statusValue, id, statusName) => {
-  parkIconGrid.changeStatus({ id, statusName, statusValue }).then( res => {
+  parkMeetingRoomInvoiceApply.changeStatus({ id, statusName, statusValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 
 const options = reactive({
-  id: 'park_icon_grid',
+  id: 'park_meeting_room_invoice_apply',
   rowSelection: {
     showCheckedAll: true
   },
@@ -40,21 +35,11 @@ const options = reactive({
     viewType: 'modal',
     width: 600
   },
-  api: parkIconGrid.getList,
-  add: {
-    show: true,
-    api: parkIconGrid.save,
-    auth: ['park:iconGrid:save']
-  },
+  api: parkMeetingRoomInvoiceApply.getList,
   edit: {
     show: true,
-    api: parkIconGrid.update,
-    auth: ['park:iconGrid:update']
-  },
-  delete: {
-    show: true,
-    api: parkIconGrid.deletes,
-    auth: ['park:iconGrid:delete']
+    api: parkMeetingRoomInvoiceApply.update,
+    auth: ['park:meetingRoomInvoiceApply:update']
   }
 })
 
@@ -79,66 +64,92 @@ const columns = reactive([
     }
   },
   {
-    title: "图标名称",
-    dataIndex: "title",
+    title: "订单单号",
+    dataIndex: "meeting_apply_no",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false
+  },
+  {
+    title: "名称",
+    dataIndex: "name",
     formType: "input",
     search: true,
-    commonRules: {
-      required: true,
-      message: "请输入图标名称"
-    }
+    addDisplay: false,
+    editDisplay: false
   },
   {
-    title: "图标图片",
-    dataIndex: "icon_image",
-    formType: "upload",
-    commonRules: {
-      required: true,
-      message: "请输入图标图片"
-    },
-    type: "image",
-    multiple: false,
-    onlyData: true,
-    returnType: "hash"
-  },
-  {
-    title: "标识",
-    dataIndex: "code",
+    title: "税号",
+    dataIndex: "tax_id",
     formType: "input",
-    commonRules: {
-      required: true,
-      message: "请输入标识"
-    }
+    search: true,
+    addDisplay: false,
+    editDisplay: false
   },
   {
-    title: "跳转地址",
-    dataIndex: "url",
-    formType: "input"
-  },
-  {
-    title: "排序",
-    dataIndex: "sort",
-    formType: "input",
-    commonRules: {
-      required: true,
-      message: "请输入排序"
-    }
-  },
-  {
-    title: "创建者",
-    dataIndex: "created_by",
+    title: "地址",
+    dataIndex: "address",
     formType: "input",
     addDisplay: false,
-    editDisplay: false,
-    hide: true
+    editDisplay: false
   },
   {
-    title: "更新者",
-    dataIndex: "updated_by",
+    title: "电话号码",
+    dataIndex: "phone",
     formType: "input",
     addDisplay: false,
+    editDisplay: false
+  },
+  {
+    title: "开户银行",
+    dataIndex: "bank",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false
+  },
+  {
+    title: "银行账户",
+    dataIndex: "bank_no",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false
+  },
+  {
+    title: "创建账号",
+    dataIndex: "user_id",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false
+  },
+  {
+    title: "发票类型",
+    dataIndex: "type",
+    formType: "select",
+    addDisplay: false,
     editDisplay: false,
-    hide: true
+    dict: {
+      data: [
+        {
+          label: "会议室",
+          value: "1"
+        }
+      ],
+      translation: true
+    }
+  },
+  {
+    title: "开具状态",
+    dataIndex: "status",
+    formType: "select",
+    addDisplay: false,
+    dict: {
+      name: "apply",
+      props: {
+        label: "title",
+        value: "key"
+      },
+      translation: true
+    }
   },
   {
     title: "创建时间",
@@ -169,4 +180,4 @@ const columns = reactive([
   }
 ])
 </script>
-<script> export default { name: 'park:iconGrid' } </script>
+<script> export default { name: 'park:meetingRoomInvoiceApply' } </script>

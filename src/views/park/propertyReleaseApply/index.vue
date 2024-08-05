@@ -29,13 +29,18 @@ const options = reactive({
     showCheckedAll: true
   },
   pk: 'id',
-  operationColumn: false,
+  operationColumn: true,
   operationColumnWidth: 160,
   formOption: {
     viewType: 'modal',
     width: 600
   },
-  api: parkPropertyReleaseApply.getList
+  api: parkPropertyReleaseApply.getList,
+  edit: {
+    show: true,
+    api: parkPropertyReleaseApply.update,
+    auth: ['park:propertyReleaseApply:update']
+  }
 })
 
 const columns = reactive([
@@ -45,19 +50,27 @@ const columns = reactive([
     formType: "input",
     addDisplay: false,
     editDisplay: false,
-    hide: true
+    hide: true,
+    sortable: {
+      sortDirections: [
+        "ascend",
+        "descend"
+      ],
+      sorter: true
+    }
   },
   {
     title: "用户ID",
     dataIndex: "user_id",
-    formType: "user-info",
+    formType: "input",
     addDisplay: false,
-    editDisplay: false
+    editDisplay: false,
+    hide: true
   },
   {
     title: "姓名",
     dataIndex: "user_name",
-    formType: "user-info",
+    formType: "input",
     search: true,
     addDisplay: false,
     editDisplay: false
@@ -87,20 +100,22 @@ const columns = reactive([
   {
     title: "物品类型",
     dataIndex: "goods_type",
-    formType: "input",
+    formType: "select",
+    search: true,
     addDisplay: false,
-    editDisplay: false
+    editDisplay: false,
+    dict: {
+      name: "property_release",
+      props: {
+        label: "title",
+        value: "key"
+      },
+      translation: true
+    }
   },
   {
     title: "物品描述",
     dataIndex: "goods_desc",
-    formType: "input",
-    addDisplay: false,
-    editDisplay: false
-  },
-  {
-    title: "车牌号",
-    dataIndex: "car_no",
     formType: "input",
     addDisplay: false,
     editDisplay: false
@@ -126,23 +141,39 @@ const columns = reactive([
         label: "title",
         value: "key"
       },
-      translation: true
+      translation: true,
+      tagColors:{0:'gray', 1: 'green', 2: 'red' }
     }
   },
   {
-    title: "申请时间",
-    dataIndex: "apply_at",
+    title: "申请日期",
+    dataIndex: "apply_date",
     formType: "date",
     addDisplay: false,
     editDisplay: false,
-    showTime: true
+    showTime: false
+  },
+  {
+    title: "开始时间",
+    dataIndex: "apply_start_at",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false
+  },
+  {
+    title: "结束时间",
+    dataIndex: "apply_end_at",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false
   },
   {
     title: "审核人",
     dataIndex: "audit_user_id",
     formType: "input",
     addDisplay: false,
-    editDisplay: false
+    editDisplay: false,
+    hide: true
   },
   {
     title: "放行时间",
@@ -150,6 +181,7 @@ const columns = reactive([
     formType: "date",
     addDisplay: false,
     editDisplay: false,
+    hide: true,
     showTime: true
   },
   {
@@ -158,11 +190,8 @@ const columns = reactive([
     formType: "upload",
     addDisplay: false,
     editDisplay: false,
-    hide: true,
     type: "file",
-    multiple: false,
-    onlyData: true,
-    returnType: "hash"
+    multiple: false
   },
   {
     title: "",

@@ -29,13 +29,18 @@ const options = reactive({
     showCheckedAll: true
   },
   pk: 'id',
-  operationColumn: false,
+  operationColumn: true,
   operationColumnWidth: 160,
   formOption: {
     viewType: 'modal',
     width: 600
   },
-  api: parkMeetingRoomApply.getList
+  api: parkMeetingRoomApply.getList,
+  edit: {
+    show: true,
+    api: parkMeetingRoomApply.update,
+    auth: ['park:meetingRoomApply:update']
+  }
 })
 
 const columns = reactive([
@@ -71,6 +76,14 @@ const columns = reactive([
     }
   },
   {
+    title: "微信支付单号",
+    dataIndex: "wechat_pay_order",
+    formType: "input",
+    search: true,
+    addDisplay: false,
+    editDisplay: false
+  },
+  {
     title: "支付时间",
     dataIndex: "pay_time",
     formType: "range",
@@ -93,7 +106,6 @@ const columns = reactive([
       required: true,
       message: "请输入支付状态"
     },
-    multiple: false,
     dict: {
       data: [
         {
@@ -101,7 +113,7 @@ const columns = reactive([
           value: "0"
         },
         {
-          label: "已支付",
+          label: "已支付 ",
           value: "1"
         }
       ],
@@ -114,9 +126,21 @@ const columns = reactive([
     formType: "input",
     addDisplay: false,
     editDisplay: false,
+    hide: true,
     commonRules: {
       required: true,
       message: "请输入申请帐号"
+    }
+  },
+  {
+    title: "支付基础金额",
+    dataIndex: "pay_price",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false,
+    commonRules: {
+      required: true,
+      message: "请输入支付基础金额"
     }
   },
   {
@@ -132,10 +156,20 @@ const columns = reactive([
     }
   },
   {
+    title: "申请人公司",
+    dataIndex: "apply_company",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false,
+    commonRules: {
+      required: true,
+      message: "请输入申请人公司"
+    }
+  },
+  {
     title: "申请人电话",
     dataIndex: "apply_phone",
     formType: "input",
-    search: true,
     addDisplay: false,
     editDisplay: false,
     commonRules: {
@@ -144,31 +178,25 @@ const columns = reactive([
     }
   },
   {
+    title: "申请日期",
+    dataIndex: "apply_date",
+    formType: "input",
+    addDisplay: false,
+    editDisplay: false,
+    commonRules: {
+      required: true,
+      message: "请输入申请日期"
+    }
+  },
+  {
     title: "申请时段",
     dataIndex: "apply_time_period",
-    formType: "select",
+    formType: "input",
     addDisplay: false,
     editDisplay: false,
     commonRules: {
       required: true,
       message: "请输入申请时段"
-    },
-    multiple: false,
-    dict: {
-      // 远程通用接口请求，新版代码生成都有一个 remote 接口
-      remote: 'park/meetingRoomPrice/remote',
-      // 指定组件接收的props
-      props: { label: 'name', value: 'id' },
-      // 开启分页
-      openPage: true,
-      // 对数据进行字典翻译
-      translation: true,
-      // 远程请求配置项
-      remoteOption: {
-        // 按用户名排序
-        // 设置查询的字段
-        select: [ 'id', 'name' ],
-      }
     }
   },
   {
@@ -186,13 +214,13 @@ const columns = reactive([
     title: "支付类型",
     dataIndex: "pay_type",
     formType: "select",
+    search: true,
     addDisplay: false,
     editDisplay: false,
     commonRules: {
       required: true,
       message: "请输入支付类型"
     },
-    multiple: false,
     dict: {
       data: [
         {
@@ -210,7 +238,8 @@ const columns = reactive([
   {
     title: "审核状态",
     dataIndex: "status",
-    formType: "radio",
+    formType: "select",
+    search: true,
     addDisplay: false,
     commonRules: {
       required: true,
@@ -237,52 +266,35 @@ const columns = reactive([
     returnType: "hash"
   },
   {
-    title: "基础服务套餐",
-    dataIndex: "base_option",
+    title: "申请类型",
+    dataIndex: "apply_type",
     formType: "select",
     addDisplay: false,
     editDisplay: false,
-    multiple: false,
+    commonRules: {
+      required: true,
+      message: "请输入申请类型"
+    },
     dict: {
-      // 远程通用接口请求，新版代码生成都有一个 remote 接口
-      remote: 'park/meetingRoomPackage/remote',
-      // 指定组件接收的props
-      props: { label: 'title', value: 'id' },
-      // 开启分页
-      openPage: true,
-      // 对数据进行字典翻译
-      translation: true,
-      // 远程请求配置项
-      remoteOption: {
-        // 按用户名排序
-        // 设置查询的字段
-        select: [ 'id', 'title' ],
-      }
+      data: [
+        {
+          label: "基础服务",
+          value: "1"
+        },
+        {
+          label: "会务服务",
+          value: "2"
+        }
+      ],
+      translation: true
     }
   },
   {
     title: "铂金服务套餐",
     dataIndex: "platinum_option",
-    formType: "select",
+    formType: "input",
     addDisplay: false,
-    editDisplay: false,
-    hide: true,
-    dict: {
-      // 远程通用接口请求，新版代码生成都有一个 remote 接口
-      remote: 'park/meetingRoomPackage/remote',
-      // 指定组件接收的props
-      props: { label: 'title', value: 'id' },
-      // 开启分页
-      openPage: true,
-      // 对数据进行字典翻译
-      translation: true,
-      // 远程请求配置项
-      remoteOption: {
-        // 按用户名排序
-        // 设置查询的字段
-        select: [ 'id', 'title' ],
-      }
-    }
+    editDisplay: false
   },
   {
     title: "创建时间",

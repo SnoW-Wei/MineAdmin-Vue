@@ -29,13 +29,18 @@ const options = reactive({
     showCheckedAll: true
   },
   pk: 'id',
-  operationColumn: false,
+  operationColumn: true,
   operationColumnWidth: 160,
   formOption: {
     viewType: 'modal',
     width: 600
   },
-  api: parkPropertyServiceApply.getList
+  api: parkPropertyServiceApply.getList,
+  edit: {
+    show: true,
+    api: parkPropertyServiceApply.update,
+    auth: ['park:propertyServiceApply:update']
+  }
 })
 
 const columns = reactive([
@@ -194,13 +199,37 @@ const columns = reactive([
     },
     multiple: false,
     dict: {
-      name: "data_status",
+      name: "apply",
       props: {
         label: "title",
         value: "key"
       },
       translation: true
     }
+  },
+  {
+    title: "维修人姓名",
+    dataIndex: "accept_name",
+    formType: "input",
+    search: false,
+    addDisplay: false,
+    commonRules: {
+      required: false,
+      message: "请输入维修人姓名"
+    },
+    multiple: false,
+  },
+  {
+    title: "维修人电话",
+    dataIndex: "accept_phone",
+    formType: "input",
+    search: false,
+    addDisplay: false,
+    commonRules: {
+      required: false,
+      message: "请输入维修人电话"
+    },
+    multiple: false,
   },
   {
     title: "图片",
@@ -217,6 +246,7 @@ const columns = reactive([
     title: "审核人",
     dataIndex: "audit_user_id",
     formType: "input",
+    hide: true,
     addDisplay: false,
     editDisplay: false
   },
@@ -226,6 +256,7 @@ const columns = reactive([
     formType: "date",
     addDisplay: false,
     editDisplay: false,
+    hide: true,
     showTime: true
   },
   {

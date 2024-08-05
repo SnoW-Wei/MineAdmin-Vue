@@ -41,5 +41,17 @@ export default {
     })
   },
 
+  /**
+   * 更新预订申请数据
+   * @returns
+   */
+  update (id, data = {}) {
+    return request({
+      url: 'park/meetingRoomApply/update/' + id,
+      method: 'put',
+      data
+    })
+  },
+
 
 }
