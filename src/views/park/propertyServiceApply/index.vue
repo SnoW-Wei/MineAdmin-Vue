@@ -199,7 +199,7 @@ const columns = reactive([
     },
     multiple: false,
     dict: {
-      name: "apply",
+      name: "property_service_apply",
       props: {
         label: "title",
         value: "key"
