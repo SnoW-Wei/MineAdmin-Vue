@@ -246,7 +246,7 @@ const columns = reactive([
       message: "请输入审核状态"
     },
     dict: {
-      name: "apply",
+      name: "meeting_book",
       props: {
         label: "title",
         value: "key"

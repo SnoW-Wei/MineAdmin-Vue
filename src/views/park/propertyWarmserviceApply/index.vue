@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import parkPeopertyWarmserviceApply from '@/api/park/parkPeopertyWarmserviceApply'
+import parkPropertyWarmserviceApply from '@/api/park/parkPropertyWarmserviceApply'
 import { Message } from '@arco-design/web-vue'
 import tool from '@/utils/tool'
 import * as common from '@/utils/common'
@@ -16,14 +16,14 @@ const crudRef = ref()
 
 
 const numberOperation = (newValue, id, numberName) => {
-  parkPeopertyWarmserviceApply.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
+  parkPropertyWarmserviceApply.numberOperation({ id, numberName, numberValue: newValue }).then( res => {
     res.success && Message.success(res.message)
   }).catch( e => { console.log(e) } )
 }
 
 
 const options = reactive({
-  id: 'park_peoperty_warmservice_apply',
+  id: 'park_property_warmservice_apply',
   rowSelection: {
     showCheckedAll: true
   },
@@ -34,7 +34,7 @@ const options = reactive({
     viewType: 'modal',
     width: 600
   },
-  api: parkPeopertyWarmserviceApply.getList
+  api: parkPropertyWarmserviceApply.getList
 })
 
 const columns = reactive([
@@ -48,13 +48,6 @@ const columns = reactive([
     commonRules: {
       required: true,
       message: "请输入"
-    },
-    sortable: {
-      sortDirections: [
-        "ascend",
-        "descend"
-      ],
-      sorter: true
     }
   },
   {
@@ -69,14 +62,14 @@ const columns = reactive([
     }
   },
   {
-    title: "服务",
+    title: "服务名称",
     dataIndex: "service_id",
     formType: "input",
     addDisplay: false,
     editDisplay: false,
     commonRules: {
       required: true,
-      message: "请输入服务"
+      message: "请输入服务名称"
     }
   },
   {
@@ -107,7 +100,7 @@ const columns = reactive([
   {
     title: "申请数量",
     dataIndex: "apply_num",
-    formType: "input-number",
+    formType: "input",
     addDisplay: false,
     editDisplay: false,
     commonRules: {
@@ -118,7 +111,8 @@ const columns = reactive([
   {
     title: "申请时间",
     dataIndex: "apply_date",
-    formType: "date",
+    formType: "range",
+    search: true,
     addDisplay: false,
     editDisplay: false,
     commonRules: {
@@ -135,7 +129,7 @@ const columns = reactive([
     editDisplay: false
   },
   {
-    title: "微信支付订单",
+    title: "支付订单号",
     dataIndex: "pay_wechat_no",
     formType: "input",
     search: true,
@@ -146,7 +140,6 @@ const columns = reactive([
     title: "状态",
     dataIndex: "status",
     formType: "select",
-    search: true,
     addDisplay: false,
     editDisplay: false,
     dict: {
@@ -187,4 +180,4 @@ const columns = reactive([
   }
 ])
 </script>
-<script> export default { name: 'park:peopertyWarmserviceApply' } </script>
+<script> export default { name: 'park:propertyWarmserviceApply' } </script>

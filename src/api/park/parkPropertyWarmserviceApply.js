@@ -12,7 +12,7 @@ export default {
    */
   getList (params = {}) {
     return request({
-      url: 'park/peopertyWarmserviceApply/index',
+      url: 'park/propertyWarmserviceApply/index',
       method: 'get',
       params
     })
@@ -24,7 +24,7 @@ export default {
    */
   read (id) {
     return request({
-      url: 'park/peopertyWarmserviceApply/read/' + id,
+      url: 'park/propertyWarmserviceApply/read/' + id,
       method: 'get'
     })
   },
@@ -35,7 +35,7 @@ export default {
    */
   numberOperation (data = {}) {
     return request({
-      url: 'park/peopertyWarmserviceApply/numberOperation',
+      url: 'park/propertyWarmserviceApply/numberOperation',
       method: 'put',
       data
     })
