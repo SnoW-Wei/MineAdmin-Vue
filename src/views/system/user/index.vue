@@ -27,7 +27,7 @@
             :checked-value="1"
             unchecked-value="2"
             @change="changeStatus($event, record.id)"
-            :default-checked="record.status == 1" 
+            :default-checked="record.status == 1"
           />
         </template>
         <!-- 头像列 -->
@@ -49,7 +49,7 @@
             v-if="record.id != 1 && ! isRecovery"
             @select="selectOperation($event, record.id)"
           >
-          
+
             <a-link><icon-double-right /> 更多</a-link>
             <template #content>
               <a-doption value="updateCache" v-auth="['system:user:cache']">更新缓存</a-doption>
@@ -120,7 +120,7 @@
       if (res.success) Message.success(res.message)
     })
   }
-  
+
   const resetPassword = (id) => {
     user.initUserPassword({ id }).then(res => res.success && Message.success(res.message) )
   }
@@ -136,7 +136,7 @@
     if (value === 'resetPassword') {
       Modal.info({
         title: '提示',
-        content: '确定将该用户密码重置为 123456 吗？',
+        content: '确定将该用户密码重置为 Qweasd123 吗？',
         simple: false,
         onBeforeOk: (done) => {
           resetPassword(id)
@@ -212,7 +212,7 @@
       title: '头像', dataIndex: 'avatar', width: 75, formType: 'upload', returnType: 'hash',
       type: 'image', rounded: true, labelWidth: '86px'
     },
-    { 
+    {
       title: '账户', dataIndex: 'username', width: 130, search: true, addDisabled: false, editDisabled: true,
       commonRules: [{ required: true, message: '账户必填' }]
     },
@@ -225,15 +225,15 @@
         return response.data.deptList.map(item => item.id )
       }
     },
-    { 
+    {
       title: '密码', dataIndex: 'password', hide: true, autocomplete: 'off',
       addDefaultValue: '123456', editDefaultValue: '', addDisabled: false, editDisabled: true, type: 'password',
       addRules: [{ required: true, message: '密码必填' }],
     },
     { title: '昵称', dataIndex: 'nickname', width: 120 },
-    { 
+    {
       title: '角色', dataIndex: 'role_ids', width: 120, formType: 'select', multiple: true,
-      dict: { url: 'system/role/list', props: { label: 'name', value: 'id' } }, hide: true, 
+      dict: { url: 'system/role/list', props: { label: 'name', value: 'id' } }, hide: true,
       commonRules: [{ required: true, message: '角色必选' }],
       editDefaultValue: async (record) => {
         const response = await user.read(record.id)
@@ -244,7 +244,7 @@
       title: '手机', dataIndex: 'phone', width: 150, search: true,
       commonRules: [{ match: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号码' }]
     },
-    { 
+    {
       title: '岗位', dataIndex: 'post_ids', width: 120, formType: 'select', multiple: true,
       dict: { url: 'system/post/list', props: { label: 'name', value: 'id' } }, hide: true,
       editDefaultValue: async (record) => {
