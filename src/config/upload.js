@@ -1,6 +1,6 @@
 export default {
   storage: {
-    LOCAL: 'http://127.0.0.1:9501', // 测试环境 https://park.chnsnow.com
+    LOCAL: 'http://127.0.0.1:9501', // todo 测试环境 https://park.chnsnow.com
     OSS: '',
     QINIU: '',
     COS: '',
